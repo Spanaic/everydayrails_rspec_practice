@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe ProjectsController, type: :controller do
   describe "#index" do
-
     # 認証済みのユーザーとして
     context 'as an authenticated user' do
       before do
@@ -36,6 +35,39 @@ RSpec.describe ProjectsController, type: :controller do
       it 'redirects to the sign-in page' do
         get :index
         expect(response).to redirect_to '/users/sign_in'
+      end
+    end
+  end
+
+  describe "#show" do
+    #認可されたユーザーとして
+    context "as an authorized user" do
+      before do
+        @user = FactoryBot.create(:user)
+        @project = FactoryBot.create(:project, owner: @user)
+      end
+
+      # 正常にレスポンスを返すこと
+      it 'responds as an authorized user' do
+        sign_in @user
+        get :show, params: {id: @project.id}
+        expect(response).to be_success
+      end
+    end
+
+    # 認可されていないユーザーとして
+    context 'as an unauthorized user' do
+      before do
+        @user = FactoryBot.create(:user)
+        other_user = FactoryBot.create(:user)
+        @project = FactoryBot.create(:project, owner: other_user)
+      end
+
+      # ダッシュボードにリダイレクトすること
+      it "redirect to the dashboard" do
+        sign_in @user
+        get :show, params: { id: @project.id }
+        expect(response).to redirect_to root_path
       end
     end
   end
