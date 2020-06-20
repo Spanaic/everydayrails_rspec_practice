@@ -3,12 +3,7 @@ require 'rails_helper'
 RSpec.describe Project, type: :model do
 
   before do
-    @user = User.create(
-      first_name: "Joe",
-      last_name: "Tester",
-      email: "tester@example.com",
-      password: "dottle-nouveau-pavilion-tights-furze",
-    )
+    @user = FactoryBot.create(:user)
   end
 
   # プロジェクト名があれば有効な状態であること
@@ -86,5 +81,11 @@ RSpec.describe Project, type: :model do
       project = FactoryBot.create(:project, :due_tomorrow) # trait Ver.
       expect(project).to_not be_late
     end
+  end
+
+  # たくさんのメモが付いていること
+  it "can have many notes" do
+    project = FactoryBot.create(:project, :with_notes)
+    expect(project.notes.length).to eq 5
   end
 end
