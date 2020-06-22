@@ -3,14 +3,16 @@ require 'rails_helper'
 RSpec.feature "Projects", type: :feature do
 
   # ユーザーは新しいプロジェクトを作成する
-  scenario "user create a new project" do
+  scenario "user creates a new project" do
     user = FactoryBot.create(:user)
+    sign_in user
+    # sign_in_as user
 
     visit root_path
-    click_link "Sign in"
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_button "Log in"
+    # click_link "Sign in"
+    # fill_in "Email", with: user.email
+    # fill_in "Password", with: user.password
+    # click_button "Log in"
 
     expect {
       click_link "New Project"
