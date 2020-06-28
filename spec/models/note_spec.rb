@@ -12,6 +12,9 @@ RSpec.describe Note, type: :model do
   let(:user) { FactoryBot.create(:user) }
   let(:project) { FactoryBot.create(:project) }
 
+  # ファイルアップロードのテスト Shoulda Mattchers ver.
+  it { is_expected.to have_attached_file(:attachemnt) }
+
   # バリデーション用のスペックが並ぶ
 
   # ユーザー、プロジェクト、メッセージが有効な状態であること
