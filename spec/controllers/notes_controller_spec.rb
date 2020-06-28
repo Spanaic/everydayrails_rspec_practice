@@ -16,7 +16,7 @@ RSpec.describe NotesController, type: :controller do
       expect(project).to receive_message_chain(:notes, :search).
         with("rotate tires")
       get :index,
-        params: { profject_id: project.id, term: 'rotate tires' }
+        params: { project_id: project.id, term: 'rotate tires' }
     end
   end
 
