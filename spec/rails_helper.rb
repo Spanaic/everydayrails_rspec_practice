@@ -80,6 +80,13 @@ RSpec.configure do |config|
   config.include RequestSpecHelper, type: :request
   config.include Devise::Test::IntegrationHelpers, type: :feature
 
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
+
   # chromeコンテナ system spec用
   # config.before(:each, type: :system) do
   #   driven_by :rack_test
