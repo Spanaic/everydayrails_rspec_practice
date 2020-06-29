@@ -27,26 +27,26 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
-# Capybaraとchromeコンテナを接続する設定
-Capybara.register_driver :remote_chrome do |app|
-  url = "http://chrome:4444/wd/hub"
-  caps = ::Selenium::WebDriver::Remote::Capabilities.chrome(
-    "goog:chromeOptions" => {
-      "args" => [
-        "no-sandbox",
-        "headless",
-        "disable-gpu",
-        "window-size=1680,1050"
-      ]
-    }
-  )
-  Capybara::Selenium::Driver.new(app, browser: :remote, url: url, desired_capabilities: caps)
-end
+# # Capybaraとchromeコンテナを接続する設定(いまいち)
+# Capybara.register_driver :remote_chrome do |app|
+#   url = "http://chrome:4444/wd/hub"
+#   caps = ::Selenium::WebDriver::Remote::Capabilities.chrome(
+#     "goog:chromeOptions" => {
+#       "args" => [
+#         "no-sandbox",
+#         "headless",
+#         "disable-gpu",
+#         "window-size=1680,1050"
+#       ]
+#     }
+#   )
+#   Capybara::Selenium::Driver.new(app, browser: :remote, url: url, desired_capabilities: caps)
+# end
 
-Capybara.configure do |config|
-  config.default_max_wait_time = 15
-  config.default_driver = :remote_chrome
-end
+# Capybara.configure do |config|
+#   config.default_max_wait_time = 15
+#   config.default_driver = :remote_chrome
+# end
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -95,6 +95,18 @@ RSpec.configure do |config|
 
   # PaperclipのShoulda Matchersサポートを追加する
   config.include Paperclip::Shoulda::Matchers
+
+  # https://qiita.com/suketa/items/d783ac61c2a3e4c16ad4
+  # https://stackoverflow.com/questions/36652970/sauce-on-android-error-seleniumwebdrivererrorunsupportedoperationerror-u
+  config.before(:each, type: :system, js: true) do
+    driven_by :selenium, using: :headless_chrome, options: {
+      browser: :remote,
+      url: ENV.fetch("SELENIUM_DRIVER_URL"),
+      desired_capabilities: :chrome
+    }
+    Capybara.server_host = 'web'
+    Capybara.app_host='http://web'
+  end
 
   # chromeコンテナ system spec用
   # config.before(:each, type: :system) do
