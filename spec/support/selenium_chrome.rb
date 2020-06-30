@@ -1,3 +1,6 @@
+# https://qiita.com/ngron/items/f61b8635b4d67f666d75
+# https://kuracux.hatenablog.jp/entry/2018/12/30/182617
+
 require 'capybara/rspec'
 require 'selenium-webdriver'
 
