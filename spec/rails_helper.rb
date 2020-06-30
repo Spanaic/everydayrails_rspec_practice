@@ -96,19 +96,34 @@ RSpec.configure do |config|
   # PaperclipのShoulda Matchersサポートを追加する
   config.include Paperclip::Shoulda::Matchers
 
-  # https://qiita.com/suketa/items/d783ac61c2a3e4c16ad4
-  # https://stackoverflow.com/questions/36652970/sauce-on-android-error-seleniumwebdrivererrorunsupportedoperationerror-u
-  config.before(:each, type: :system, js: true) do
-    driven_by :selenium, using: :headless_chrome, options: {
-      browser: :remote,
-      url: ENV.fetch("SELENIUM_DRIVER_URL"),
-      desired_capabilities: :chrome
-    }
-    Capybara.server_host = 'web'
-    Capybara.app_host='http://web'
+  # -------------------------------------------------------------------------------
+
+  # chromeコンテナ用設定(その３)
+  config.before(:each, type: :system) do
+    driven_by :rack_test
   end
 
-  # chromeコンテナ system spec用
+  config.before(:each, type: :system, js: true) do
+    driven_by :selenium_chrome_headless
+  end
+
+  # -------------------------------------------------------------------------------
+
+  # chromeコンテナ用設定(その２)
+  # https://qiita.com/suketa/items/d783ac61c2a3e4c16ad4
+  # https://stackoverflow.com/questions/36652970/sauce-on-android-error-seleniumwebdrivererrorunsupportedoperationerror-u
+  # config.before(:each, type: :system, js: true) do
+  #   driven_by :selenium, using: :headless_chrome, options: {
+  #     browser: :remote,
+  #     url: ENV.fetch("SELENIUM_DRIVER_URL"),
+  #     desired_capabilities: :chrome
+  #   }
+  #   Capybara.server_host = 'web'
+  #   Capybara.app_host='http://web'
+  # end
+
+  # -------------------------------------------------------------------------------
+  # chromeコンテナ system spec用(その１)
   # config.before(:each, type: :system) do
   #   driven_by :rack_test
   # end

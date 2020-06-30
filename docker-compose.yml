@@ -10,10 +10,10 @@ services:
       - bundle:/usr/local/bundle
     depends_on:
       - db
-      - chrome
-    environment:
-      # - "SELENIUM_DRIVER_URL=http://selenium_chrome:4444/wd/hub"
-      - "SELENIUM_DRIVER_URL=http://chrome:4444/wd/hub"
+    #   - chrome
+    # environment:
+    #   # - "SELENIUM_DRIVER_URL=http://selenium_chrome:4444/wd/hub"
+    #   - "SELENIUM_DRIVER_URL=http://chrome:4444/wd/hub"
   db:
     image: mysql:5.7
     environment:
@@ -22,14 +22,14 @@ services:
       - '3306:3306'
     volumes:
       - mysql_data:/var/lib/mysql
-  chrome:
-    # image: selenium/standalone-chrome:latest
-    image: selenium/standalone-chrome-debug:latest
-    # ports:
-    #   - 4444:4444
-      # - 5900:5900
-    logging:
-      driver: none
+  # chrome:
+  #   # image: selenium/standalone-chrome:latest
+  #   image: selenium/standalone-chrome-debug:latest
+  #   ports:
+  #     - 4444:4444
+  #     # - 5900:5900
+  #   logging:
+  #     driver: none
 volumes:
   bundle:
   mysql_data:
