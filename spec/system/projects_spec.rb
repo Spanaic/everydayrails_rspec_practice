@@ -1,6 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe "Projects", type: :system do
+# https://qiita.com/nappyon/items/70c31ac3933d18565068
+RSpec.describe "Projects",js: true, type: :system do
 
   # ユーザーは新しいプロジェクトを作成する
   scenario "user creates a new project" do
@@ -50,8 +51,9 @@ RSpec.describe "Projects", type: :system do
     # "complete"ボタンをクリックすると
     click_button "Complete"
 
-    # FIXME: launchyがdocker上でうまく動かず...
     # save_and_open_page
+    # updateでメソッド変更 js: trueもわすれずに！
+    save_screenshot
 
     # プロジェクトは完了済みとしてマークされる
     expect(project.reload.completed?).to be true
