@@ -43,10 +43,18 @@ RSpec.describe "Projects", type: :system do
     sign_in user
     # ユーザーがプロジェクト画面を開き、
     visit project_path(project)
+
+    # complete前は"Completed"ラベルを表示しない
+    expect(page).to_not have_content "Completed"
+
     # "complete"ボタンをクリックすると
     click_button "Complete"
+
+    # FIXME: launchyがdocker上でうまく動かず...
+    # save_and_open_page
+
     # プロジェクトは完了済みとしてマークされる
-    expect(project.reload.compoleted?).to be true
+    expect(project.reload.completed?).to be true
     expect(page).to \
       have_content "Congratulations, this project is complete!" # flash
     expect(page).to have_content "Completed"

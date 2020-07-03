@@ -13,7 +13,7 @@ RSpec.describe Note, type: :model do
   let(:project) { FactoryBot.create(:project) }
 
   # ファイルアップロードのテスト Shoulda Mattchers ver.
-  it { is_expected.to have_attached_file(:attachemnt) }
+  it { is_expected.to have_attached_file(:attachment) }
 
   # バリデーション用のスペックが並ぶ
 
