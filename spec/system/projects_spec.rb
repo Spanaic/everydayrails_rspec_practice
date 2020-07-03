@@ -30,7 +30,26 @@ RSpec.describe "Projects", type: :system do
 
   # ゲストがプロジェクトを追加する
   # scenario "guest adds a project" do
-  #   visit projects_path
+  #   visit root_path
   #   click_link "New Project"
   # end
+
+  # ユーザーはプロジェクトを完了済みにする
+  scenario "user completes a project" do
+    # プロジェクトを持ったユーザーを準備する
+    user = FactoryBot.create(:user)
+    project = FactoryBot.create(:project, owner: user)
+    # ユーザーはログインしている
+    sign_in user
+    # ユーザーがプロジェクト画面を開き、
+    visit project_path(project)
+    # "complete"ボタンをクリックすると
+    click_button "Complete"
+    # プロジェクトは完了済みとしてマークされる
+    expect(project.reload.compoleted?).to be true
+    expect(page).to \
+      have_content "Congratulations, this project is complete!" # flash
+    expect(page).to have_content "Completed"
+    expect(page).to_not have_button "Complete"
+  end
 end
